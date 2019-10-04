@@ -1,8 +1,15 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
+buildscript {
+    dependencies {
+        classpath("org.flywaydb:flyway-gradle-plugin:6.0.4")
+    }
+}
+
 plugins {
     application
     kotlin("jvm") version "1.3.50"
+    id("org.flywaydb.flyway") version "6.0.4"
 }
 
 group = "br.com.maccommerce"
@@ -58,6 +65,8 @@ dependencies {
     implementation("com.zaxxer:HikariCP:3.4.1")
     implementation("org.slf4j:slf4j-simple:1.7.28")
     implementation("org.postgresql:postgresql:42.2.8")
+    implementation("org.flywaydb:flyway-core:6.0.4")
+    implementation("io.azam.ulidj:ulidj:1.0.0")
 
     testImplementation("org.jetbrains.kotlin:kotlin-test:1.3.50")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:2.0.7")
