@@ -11,7 +11,7 @@ open class CrudServiceImpl<T> constructor(
     override fun save(entity: T) = repository.persist(entity)
 
     override fun update(id: String, entity: T) =
-        repository.findById(id)?.let { repository.update(entity) }
+        repository.findById(id)?.let { repository.update(id, entity) }
             ?: throw NotFoundException("Entity with id $id was not found.")
 
     override fun delete(id: String) = repository.delete(id)
