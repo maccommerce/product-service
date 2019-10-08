@@ -9,7 +9,7 @@ enum class ApiExceptionType {
 
 }
 
-class ApiException(
+open class ApiException(
     val type: ApiExceptionType,
     override val message: String
 ) : RuntimeException(message)

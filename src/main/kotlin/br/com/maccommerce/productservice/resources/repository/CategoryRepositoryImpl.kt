@@ -1,27 +1,27 @@
-package br.com.maccommerce.productservice.app.web.controller
+package br.com.maccommerce.productservice.resources.repository
 
-import org.http4k.core.Request
-import org.http4k.core.Response
+import br.com.maccommerce.productservice.domain.entity.Category
+import br.com.maccommerce.productservice.domain.repository.CategoryRepository
 
-class ProductController : CrudController {
+class CategoryRepositoryImpl : CategoryRepository {
 
-    override fun save(request: Request): Response {
+    override fun persist(entity: Category): Category {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun update(request: Request): Response {
+    override fun update(entity: Category): Category {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun delete(request: Request): Response {
+    override fun delete(id: String) {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun findAll(request: Request): Response {
+    override fun findAll(): List<Category> {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    override fun findById(request: Request): Response {
+    override fun findById(id: String): Category? {
         TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 

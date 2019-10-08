@@ -3,6 +3,7 @@ package br.com.maccommerce.productservice.app
 import br.com.maccommerce.productservice.app.config.EnvironmentConfig
 import br.com.maccommerce.productservice.app.config.appModules
 import br.com.maccommerce.productservice.app.web.handler.ErrorHandler
+import br.com.maccommerce.productservice.app.web.router.CategoryRouter
 import br.com.maccommerce.productservice.app.web.router.ProductRouter
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -48,8 +49,10 @@ object App : KoinComponent {
         }).run { Database.connect(this) }
     }
 
+    private val routes = (ProductRouter() + CategoryRouter())
+
     private fun startServer() {
-        ProductRouter().toTypedArray().run {
+        routes.toTypedArray().run {
             routes(*this).withFilter(ErrorHandler()).run {
                 asServer(Jetty(8000)).start()
             }
