@@ -25,5 +25,7 @@ inline fun <reified T : Any> Request.jsonBody() = Jackson.asA(this.bodyString(),
 
 fun Response.jsonBody(target: Any) = this.body(Jackson.asJsonString(target))
 
+inline fun <reified T : Any> Response.bodyAsJson() = Jackson.asA(this.bodyString(), T::class)
+
 fun <T> Request.getIdFromPath(body: (String) -> T) =
     this.path("id")?.let { body(it) } ?: throw BadRequestException("Parameter 'id' was not sent in path.")
