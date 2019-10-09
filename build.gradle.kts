@@ -55,6 +55,14 @@ tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs("src/main/commons")
+        }
+    }
+}
+
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
     implementation("org.http4k:http4k-core:3.187.0")
@@ -64,6 +72,8 @@ dependencies {
     implementation("org.koin:koin-core:2.0.1")
     implementation("com.zaxxer:HikariCP:3.4.1")
     implementation("org.slf4j:slf4j-simple:1.7.28")
+    implementation("org.apache.logging.log4j:log4j-api:2.12.1")
+    implementation("org.apache.logging.log4j:log4j-core:2.12.1")
     implementation("org.postgresql:postgresql:42.2.8")
     implementation("org.flywaydb:flyway-core:6.0.4")
     implementation("io.azam.ulidj:ulidj:1.0.0")

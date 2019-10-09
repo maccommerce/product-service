@@ -1,25 +1,28 @@
 package br.com.maccommerce.productservice.resources.repository
 
+import br.com.maccommerce.productservice.commons.Loggable
 import br.com.maccommerce.productservice.domain.entity.Category
 import br.com.maccommerce.productservice.domain.repository.CategoryRepository
 import br.com.maccommerce.productservice.resources.entity.CategoryTable
 import br.com.maccommerce.productservice.resources.extension.toCategory
 import io.azam.ulidj.ULID
-import org.jetbrains.exposed.sql.*
+import org.jetbrains.exposed.sql.deleteWhere
+import org.jetbrains.exposed.sql.insert
+import org.jetbrains.exposed.sql.select
+import org.jetbrains.exposed.sql.selectAll
+import org.jetbrains.exposed.sql.update
 
 class CategoryRepositoryImpl : CategoryRepository {
 
     override fun persist(entity: Category) = transactionCatching {
-        val ulid = ULID.random()
-
-        CategoryTable.insert {
-            it[id] = ulid
-            it[name] = entity.name
-            it[description] = entity.description
+        ULID.random().let { ulid ->
+            CategoryTable.insert {
+                it[id] = ulid
+                it[name] = entity.name
+                it[description] = entity.description
+            }.let { entity.copy(id = ulid) }
         }
-
-        entity.copy(id = ulid)
-    }
+    }.also { logger.info("Category persisted successfully with id = ${it.id}") }
 
     override fun update(id: String, entity: Category) = transactionCatching {
         CategoryTable.update({ CategoryTable.id eq id }) {
@@ -27,21 +30,21 @@ class CategoryRepositoryImpl : CategoryRepository {
             if(entity.description.isNotEmpty()) {
                 it[description] = entity.description
             }
-        }
-
-        entity
-    }
+        }.let { entity }
+    }.also { logger.info("Category with id = ${it.id} was updated successfully") }
 
     override fun delete(id: String) = transactionCatching {
         CategoryTable.deleteWhere { CategoryTable.id eq id }
-    }.let { Unit }
+    }.let { Unit }.also { logger.info("Category with id = $id deleted successfully") }
 
     override fun findAll() = transactionCatching {
         CategoryTable.selectAll().map { it.toCategory() }
-    }
+    }.also { logger.info("All categories fetched successfully.") }
 
     override fun findById(id: String) = transactionCatching {
         CategoryTable.select { CategoryTable.id eq id }.firstOrNull()?.toCategory()
-    }
+    }.also { logger.info("Category with id = $id fetched successfully") }
+
+    companion object : Loggable()
 
 }
