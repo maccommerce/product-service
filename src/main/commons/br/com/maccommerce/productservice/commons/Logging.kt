@@ -1,6 +1,6 @@
 package br.com.maccommerce.productservice.commons
 
-import org.apache.logging.log4j.LogManager
+import org.slf4j.LoggerFactory
 import kotlin.reflect.KClass
 
 interface Logger {
@@ -17,7 +17,7 @@ interface Logger {
 
 class LoggerImpl(target: KClass<*>) : Logger {
 
-    private val logger = LogManager.getLogger(target.java)
+    private val logger = LoggerFactory.getLogger(target.java)
 
     override fun debug(message: String) = logger.debug(message)
 
