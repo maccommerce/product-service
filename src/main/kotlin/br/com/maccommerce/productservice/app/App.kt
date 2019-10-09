@@ -47,7 +47,6 @@ object App : KoinComponent {
             jdbcUrl = EnvironmentConfig.jbdcDatabaseUrl
             username = EnvironmentConfig.jbdcDatabaseUsername
             password = EnvironmentConfig.jbdcDatabasePassword
-            minimumIdle = 0
         }).run { Database.connect(this) }
     }
 
