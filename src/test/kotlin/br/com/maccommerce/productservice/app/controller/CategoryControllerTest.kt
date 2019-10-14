@@ -1,4 +1,4 @@
-package br.com.maccommerce.productservice.app
+package br.com.maccommerce.productservice.app.controller
 
 import br.com.maccommerce.productservice.app.extension.bodyAsJson
 import br.com.maccommerce.productservice.app.web.controller.CategoryController
