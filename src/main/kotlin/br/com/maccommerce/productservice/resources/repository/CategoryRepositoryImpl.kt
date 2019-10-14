@@ -2,6 +2,7 @@ package br.com.maccommerce.productservice.resources.repository
 
 import br.com.maccommerce.productservice.commons.Loggable
 import br.com.maccommerce.productservice.domain.entity.Category
+import br.com.maccommerce.productservice.domain.exception.DatabaseException
 import br.com.maccommerce.productservice.domain.repository.CategoryRepository
 import br.com.maccommerce.productservice.resources.entity.CategoryTable
 import br.com.maccommerce.productservice.resources.extension.toCategory
@@ -27,10 +28,13 @@ class CategoryRepositoryImpl : CategoryRepository {
     override fun update(id: String, entity: Category) = transactionCatching {
         CategoryTable.update({ CategoryTable.id eq id }) {
             it[name] = entity.name
-            if(entity.description.isNotEmpty()) {
-                it[description] = entity.description
+            it[description] = entity.description
+        }.let {
+            if(it == 0) throw DatabaseException(message = "Category with id = $id was not updated.").also { e ->
+                logger.error(e.message)
             }
-        }.let { entity }
+            else entity
+        }
     }.also { logger.info("Category with id = ${it.id} was updated successfully") }
 
     override fun delete(id: String) = transactionCatching {

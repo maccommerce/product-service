@@ -11,5 +11,6 @@ enum class ApiExceptionType {
 
 open class ApiException(
     val type: ApiExceptionType,
-    override val message: String
+    override val message: String,
+    override val cause: Throwable? = null
 ) : RuntimeException(message)
