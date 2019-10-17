@@ -34,9 +34,9 @@ object App : KoinComponent {
     private fun runMigrations() {
         Flyway.configure().run {
             dataSource(
-                EnvironmentConfig.jbdcDatabaseUrl,
-                EnvironmentConfig.jbdcDatabaseUsername,
-                EnvironmentConfig.jbdcDatabasePassword
+                EnvironmentConfig.jdbcDatabaseUrl,
+                EnvironmentConfig.jdbcDatabaseUsername,
+                EnvironmentConfig.jdbcDatabasePassword
             ).load()
         }.apply { migrate() }
     }
@@ -44,9 +44,9 @@ object App : KoinComponent {
     private fun connectToDatabase() {
         HikariDataSource(HikariConfig().apply {
             driverClassName = "org.postgresql.Driver"
-            jdbcUrl = EnvironmentConfig.jbdcDatabaseUrl
-            username = EnvironmentConfig.jbdcDatabaseUsername
-            password = EnvironmentConfig.jbdcDatabasePassword
+            jdbcUrl = EnvironmentConfig.jdbcDatabaseUrl
+            username = EnvironmentConfig.jdbcDatabaseUsername
+            password = EnvironmentConfig.jdbcDatabasePassword
         }).run { Database.connect(this) }
     }
 

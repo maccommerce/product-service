@@ -33,7 +33,7 @@ class CategoryRepositoryImpl : CategoryRepository {
             if(it == 0) throw DatabaseException(message = "Category with id = $id was not updated.").also { e ->
                 logger.error(e.message)
             }
-            else entity
+            else entity.copy(id = id)
         }
     }.also { logger.info("Category with id = ${it.id} was updated successfully") }
 

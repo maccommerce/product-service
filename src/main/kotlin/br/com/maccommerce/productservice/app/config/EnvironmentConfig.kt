@@ -17,13 +17,13 @@ object EnvironmentConfig : KoinComponent {
     val applicationPort: Int = getKoin().getProperty(APPLICATION_PORT) ?:
         throw EnvironmentVariableNotFoundException(APPLICATION_PORT)
 
-    val jbdcDatabaseUrl: String = getKoin().getProperty(JDBC_DATABASE_URL) ?:
+    val jdbcDatabaseUrl: String = getKoin().getProperty(JDBC_DATABASE_URL) ?:
         throw EnvironmentVariableNotFoundException(JDBC_DATABASE_URL)
 
-    val jbdcDatabaseUsername: String = getKoin().getProperty(JDBC_DATABASE_USERNAME) ?:
+    val jdbcDatabaseUsername: String = getKoin().getProperty(JDBC_DATABASE_USERNAME) ?:
         throw EnvironmentVariableNotFoundException(JDBC_DATABASE_USERNAME)
 
-    val jbdcDatabasePassword: String = getKoin().getProperty(JDBC_DATABASE_PASSWORD) ?:
+    val jdbcDatabasePassword: String = getKoin().getProperty(JDBC_DATABASE_PASSWORD) ?:
         throw EnvironmentVariableNotFoundException(JDBC_DATABASE_PASSWORD)
 
 }
