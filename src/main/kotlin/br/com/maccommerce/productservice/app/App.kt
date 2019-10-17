@@ -10,13 +10,17 @@ import com.zaxxer.hikari.HikariDataSource
 import org.flywaydb.core.Flyway
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.routes
+import org.http4k.server.Http4kServer
 import org.http4k.server.Jetty
 import org.http4k.server.asServer
 import org.jetbrains.exposed.sql.Database
 import org.koin.core.KoinComponent
 import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
 
 object App : KoinComponent {
+
+    private lateinit var server: Http4kServer
 
     private fun setupKoin() {
         startKoin {
@@ -53,7 +57,7 @@ object App : KoinComponent {
     private val routes: List<RoutingHttpHandler> get() = (ProductRouter() + CategoryRouter())
 
     private fun startServer() {
-        routes.toTypedArray().run {
+        server = routes.toTypedArray().run {
             routes(*this).withFilter(ErrorHandler()).run {
                 asServer(Jetty(port = EnvironmentConfig.applicationPort)).start()
             }
@@ -61,6 +65,8 @@ object App : KoinComponent {
     }
 
     fun start() = setupKoin().also { setupDatabase() }.also { startServer() }
+
+    fun stop() = stopKoin().also { server.close() }
 
 }
 

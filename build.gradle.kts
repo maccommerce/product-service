@@ -93,7 +93,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
     testImplementation("io.mockk:mockk:1.9.3")
-    testImplementation("com.opentable.components:otj-pg-embedded:0.13.2")
+    testImplementation("io.zonky.test:embedded-postgres:1.2.5")
     testImplementation("org.junit.platform:junit-platform-engine:1.5.2")
     testImplementation("org.spekframework.spek2:spek-dsl-jvm:2.0.7") {
         exclude(group = "org.jetbrains.kotlin")
