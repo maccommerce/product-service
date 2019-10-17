@@ -4,8 +4,8 @@ import br.com.maccommerce.productservice.domain.entity.Category
 import br.com.maccommerce.productservice.domain.entity.Product
 import br.com.maccommerce.productservice.domain.exception.DatabaseException
 import br.com.maccommerce.productservice.resources.entity.CategoryTable
-import com.opentable.db.postgres.embedded.EmbeddedPostgres
 import io.azam.ulidj.ULID
+import io.zonky.test.db.postgres.embedded.EmbeddedPostgres
 import org.flywaydb.core.Flyway
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.insert
