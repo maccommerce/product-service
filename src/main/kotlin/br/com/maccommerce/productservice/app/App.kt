@@ -3,10 +3,12 @@ package br.com.maccommerce.productservice.app
 import br.com.maccommerce.productservice.app.config.EnvironmentConfig
 import br.com.maccommerce.productservice.app.config.appModules
 import br.com.maccommerce.productservice.app.web.handler.ErrorHandler
+import br.com.maccommerce.productservice.app.web.router.CategoryRouter
 import br.com.maccommerce.productservice.app.web.router.ProductRouter
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.flywaydb.core.Flyway
+import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.routes
 import org.http4k.server.Jetty
 import org.http4k.server.asServer
@@ -32,9 +34,9 @@ object App : KoinComponent {
     private fun runMigrations() {
         Flyway.configure().run {
             dataSource(
-                EnvironmentConfig.jbdcDatabaseUrl,
-                EnvironmentConfig.jbdcDatabaseUsername,
-                EnvironmentConfig.jbdcDatabasePassword
+                EnvironmentConfig.jdbcDatabaseUrl,
+                EnvironmentConfig.jdbcDatabaseUsername,
+                EnvironmentConfig.jdbcDatabasePassword
             ).load()
         }.apply { migrate() }
     }
@@ -42,16 +44,18 @@ object App : KoinComponent {
     private fun connectToDatabase() {
         HikariDataSource(HikariConfig().apply {
             driverClassName = "org.postgresql.Driver"
-            jdbcUrl = EnvironmentConfig.jbdcDatabaseUrl
-            username = EnvironmentConfig.jbdcDatabaseUsername
-            password = EnvironmentConfig.jbdcDatabasePassword
+            jdbcUrl = EnvironmentConfig.jdbcDatabaseUrl
+            username = EnvironmentConfig.jdbcDatabaseUsername
+            password = EnvironmentConfig.jdbcDatabasePassword
         }).run { Database.connect(this) }
     }
 
+    private val routes: List<RoutingHttpHandler> get() = (ProductRouter() + CategoryRouter())
+
     private fun startServer() {
-        ProductRouter().toTypedArray().run {
+        routes.toTypedArray().run {
             routes(*this).withFilter(ErrorHandler()).run {
-                asServer(Jetty(8000)).start()
+                asServer(Jetty(port = EnvironmentConfig.applicationPort)).start()
             }
         }
     }

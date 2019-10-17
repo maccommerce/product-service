@@ -3,26 +3,26 @@ package br.com.maccommerce.productservice.app.web.controller
 import org.http4k.core.Request
 import org.http4k.core.Response
 
-class ProductController {
+class ProductController : CrudController {
 
-    fun save(request: Request): Response {
-        TODO()
+    override fun save(request: Request): Response {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun update(request: Request): Response {
-        TODO()
+    override fun update(request: Request): Response {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun delete(request: Request): Response {
-        TODO()
+    override fun delete(request: Request): Response {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun findAll(request: Request): Response {
-        TODO()
+    override fun findAll(request: Request): Response {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
-    fun findById(request: Request): Response {
-        TODO()
+    override fun findById(request: Request): Response {
+        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
     }
 
 }
