@@ -47,7 +47,7 @@ class CategoryRepositoryImpl : CategoryRepository {
 
     override fun findById(id: String) = transactionCatching {
         CategoryTable.select { CategoryTable.id eq id }.firstOrNull()?.toCategory()
-    }.also { logger.info("Category with id = $id fetched successfully") }
+    }.also { logger.info("Category with id = $id was ${if(it == null) "not" else ""} fetched successfully") }
 
     companion object : Loggable()
 
