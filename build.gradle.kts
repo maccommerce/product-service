@@ -61,7 +61,7 @@ tasks {
             }
         })
 
-        archiveFileName.set(project.name)
+        archiveFileName.set("${project.name}.jar")
 
         // removing signed files from jar
         exclude("META-INF/*.RSA", "META-INF/*.SF", "META-INF/*.DSA")
