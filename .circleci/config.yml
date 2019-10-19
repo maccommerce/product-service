@@ -20,9 +20,25 @@ jobs:
       - checkout
 
       - run:
-          name: Chmod permissions
+          name: Granting chmod permission
           command: sudo chmod +x ./gradlew
 
+      - restore_cache:
+          key: product-service-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
+      - restore_cache:
+          key: product-service-cache-{{ checksum "build.gradle.kts" }}
+
       - run:
-          name: Run tests
+          name: Running tests
           command: ./gradlew clean test integrationTest
+
+      - save_cache:
+          paths:
+            - ~/.gradle/wrapper
+          key: product-service-wrapper-{{ checksum "gradle/wrapper/gradle-wrapper.properties" }}
+
+      - save_cache:
+          paths:
+            - ~/.gradle/caches
+          key: product-service-cache-{{ checksum "build.gradle.kts" }}
