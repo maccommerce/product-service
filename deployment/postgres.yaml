@@ -1,0 +1,79 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: product-service-db-secrets
+type: Opaque
+data:
+  db_pass: cGdwYXNz
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: product-service-db-pv-claim
+  labels:
+    app: product-service-db
+spec:
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 5Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: product-service-db
+  labels:
+    app: product-service-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: product-service-db
+  template:
+    metadata:
+      labels:
+        app: product-service-db
+      name: product-service-db
+    spec:
+      containers:
+        - name: product-service-db
+          image: postgres:9.6
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5432
+          volumeMounts:
+            - mountPath: /var/lib/postgresql/data
+              name: product-service-db-volume
+          env:
+            - name: PGDATA
+              value: "/var/lib/postgresql/data/pgdata"
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: product-service-db-secrets
+                  key: db_pass
+      volumes:
+        - name: product-service-db-volume
+          persistentVolumeClaim:
+            claimName: product-service-db-pv-claim
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-service-db
+  labels:
+    app: product-service-db
+spec:
+  type: NodePort
+  ports:
+  - port: 5432
+    protocol: TCP
+  selector:
+    app: product-service-db
