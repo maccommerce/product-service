@@ -8,6 +8,8 @@ import br.com.maccommerce.productservice.app.web.router.ProductRouter
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
 import org.flywaydb.core.Flyway
+import org.http4k.filter.CorsPolicy.Companion.UnsafeGlobalPermissive
+import org.http4k.filter.ServerFilters.Cors
 import org.http4k.routing.RoutingHttpHandler
 import org.http4k.routing.routes
 import org.http4k.server.Http4kServer
@@ -58,9 +60,10 @@ object App : KoinComponent {
 
     private fun startServer() {
         server = routes.toTypedArray().run {
-            routes(*this).withFilter(ErrorHandler()).run {
-                asServer(Jetty(port = EnvironmentConfig.applicationPort)).start()
-            }
+            routes(*this)
+                .withFilter(ErrorHandler())
+                .withFilter(Cors(UnsafeGlobalPermissive))
+                .run { asServer(Jetty(port = EnvironmentConfig.applicationPort)).start() }
         }
     }
 
