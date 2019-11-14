@@ -16,7 +16,7 @@ plugins {
 }
 
 group = "br.com.maccommerce"
-version = "1.0.0-SNAPSHOT"
+version = "0.0.2"
 
 repositories {
     jcenter()
@@ -73,6 +73,18 @@ tasks {
 
     withType<KotlinCompile> {
         kotlinOptions.jvmTarget = "1.8"
+    }
+
+    register<Exec>("dockerBuild") {
+        workingDir = file(".")
+        commandLine("docker", "build", "-t", "maccommerce/${project.name}:latest", "-t", "maccommerce/${project.name}:${project.version}", ".")
+    }
+
+    register<Exec>("dockerPush") {
+        dependsOn("dockerBuild")
+        workingDir = file(".")
+        commandLine("docker", "push", "maccommerce/${project.name}:latest")
+        commandLine("docker", "push", "maccommerce/${project.name}:${project.version}")
     }
 }
 
