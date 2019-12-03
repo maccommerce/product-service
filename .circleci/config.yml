@@ -33,10 +33,6 @@ jobs:
           name: Running tests
           command: ./gradlew clean test integrationTest
 
-      - run:
-          name: Push image to Docker Hub
-          command: sh push_dockerhub.sh
-
       - save_cache:
           paths:
             - ~/.gradle/wrapper
